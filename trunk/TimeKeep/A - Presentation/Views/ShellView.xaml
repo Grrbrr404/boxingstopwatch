@@ -1,0 +1,28 @@
+﻿<Window x:Class="TimeKeep.Presentation.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" 
+        Title="ShellView" Height="320" Width="533"
+        cal:Message.Attach="[Event Closing] = [OnClosing]; [Event KeyUp] = [OnKeyUp($eventArgs)]"
+        WindowState="{Binding WinState}"
+        WindowStyle="{Binding WinStyle}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="35" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Viewbox Stretch="Uniform">
+      <TextBlock x:Name="txtRoundTime" Text="{Binding RM.Time}" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+    </Viewbox>
+    <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Margin="3" x:Name="btnStartTimer" Content="Start" cal:Message.Attach="[Event Click] = [StartTimer]" BorderThickness="1" />
+            <Button Margin="3" x:Name="btnStopTimer" Content="Stop" cal:Message.Attach="[Event Click] = [StopTimer]" Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</Window>
