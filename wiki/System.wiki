@@ -7,9 +7,7 @@ System architecture / System Design.
 
 = Details =
 
-- .Net 4.0 Application
-- MVVM Design
-- 7 Layer architecture (WAF Application Framework)
-- Caliburn Micro implemented
-
-[http://i3.codeplex.com/Download?ProjectName=waf&DownloadId=86249]
+  *.Net 4.0 Application
+  *MVVM Design
+  *7 Layer architecture (WAF Application Framework)
+  *Caliburn Micro implemented
