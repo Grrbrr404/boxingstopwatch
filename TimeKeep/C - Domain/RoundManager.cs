@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TimeKeep.Domain {
-  using System.ComponentModel;
   using System.Threading;
 
   using Caliburn.Micro;
 
-  using TimeKeep.Properties;
-
+  /// <summary>
+  /// Timer class with start / stop functionality.
+  /// </summary>
   public class RoundManager : PropertyChangedBase {
 
     private const int TIMER_INTERVAL = 100;
     
-    #region variables
+    #region Variables
     
     /// <summary>
     /// Round definition for this RoundManger instance.
@@ -25,7 +22,9 @@ namespace TimeKeep.Domain {
     /// <summary>
     /// Rounds finished
     /// </summary>
-    private uint _countFinishedRounds = 0;
+    private int _countFinishedRounds = 0;
+
+    private int _currentRound = 0;
 
     /// <summary>
     /// Indicates if the timer thread is currently running or not
@@ -55,13 +54,31 @@ namespace TimeKeep.Domain {
     /// <summary>
     /// Rounds finished
     /// </summary>
-    public uint CountFinishedRounds {
+    public int CountFinishedRounds {
       get {
         return _countFinishedRounds;
       }
       private set {
         _countFinishedRounds = value;
         NotifyOfPropertyChange(() => CountFinishedRounds);
+        NotifyOfPropertyChange(() => RoundText);
+      }
+    }
+
+    public string RoundText {
+      get {
+        var roundOffset = HasMaxRounds ? _roundDefinition.GetMaxRounds().ToString() : "\u221E";
+        return string.Format("{0} / {1}", CountFinishedRounds, roundOffset);
+      }
+    }
+
+    public int CurrentRound {
+      get {
+        return _currentRound;
+      }
+      private set {
+        _currentRound = value;
+        NotifyOfPropertyChange(() => CurrentRound);
       }
     }
 
@@ -117,6 +134,7 @@ namespace TimeKeep.Domain {
       
         if (_remainingTimeOfPhase == TimeSpan.Zero) {
           _remainingTimeOfPhase = TimeSpan.FromSeconds(_roundDefinition.GetRoundTimeInSeconds());
+          CurrentRound = 1;
         }
       
         _timerThread.Start();
@@ -151,10 +169,12 @@ namespace TimeKeep.Domain {
     private void ChangePhase() {
       switch (_phase) {
         case ManagerPhase.Round:
+          CountFinishedRounds++;
           _phase = ManagerPhase.Pause;
           _remainingTimeOfPhase = TimeSpan.FromSeconds(_roundDefinition.GetPauseTimeInSeconds());
           break;
         case ManagerPhase.Pause:
+          CurrentRound++;
           _phase = ManagerPhase.Round;
           _remainingTimeOfPhase = TimeSpan.FromSeconds(_roundDefinition.GetRoundTimeInSeconds());
           break;
