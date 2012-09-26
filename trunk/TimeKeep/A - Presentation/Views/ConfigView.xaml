@@ -1,0 +1,26 @@
+﻿<Window x:Class="TimeKeep.Presentation.Views.ConfigView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Konfiguration" Height="364" Width="394" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+            <TabItem Header="Runde">
+            <StackPanel Margin="3">
+                <GroupBox Header="Aktuell verwendet" Height="75" Name="grpbxRound" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Farben &amp; Töne" />
+        </TabControl>
+</Window>

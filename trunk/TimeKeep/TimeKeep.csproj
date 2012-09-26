@@ -64,6 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="A - Presentation\Views\ConfigView.xaml.cs">
+      <DependentUpon>ConfigView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="A - Presentation\Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -74,13 +77,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="B - Application\AppBootstrapper.cs" />
-    <Compile Include="B - Application\MefBootstrapper.cs" />
+    <Compile Include="B - Application\ViewModels\ConfigViewModel.cs" />
     <Compile Include="B - Application\ViewModels\IShell.cs" />
     <Compile Include="B - Application\ViewModels\ShellViewModel.cs" />
     <Compile Include="C - Domain\ManagerPhase.cs" />
     <Compile Include="C - Domain\IRoundDefinition.cs" />
     <Compile Include="C - Domain\PropertyRoundDefinition.cs" />
     <Compile Include="C - Domain\RoundManager.cs" />
+    <Compile Include="F - Foundation\Threading\BackgroundAction.cs" />
+    <Compile Include="F - Foundation\Threading\BackgroundProcess.cs" />
+    <Compile Include="F - Foundation\Threading\Interfaces\IBackgroundAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -105,8 +111,15 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="D - Business Infrastructure\" />
+    <Folder Include="E - Technical Service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="A - Presentation\Views\ConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="A - Presentation\Views\ShellView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
