@@ -27,6 +27,11 @@ namespace TimeKeep.Domain
             }
         }
 
+        public int MaxRounds()
+        {
+            return Definition.GetMaxRounds();
+        }
+
         public RoundTemplate(IRoundDefinition definition)
         {
             Definition = definition;
