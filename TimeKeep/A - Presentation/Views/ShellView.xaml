@@ -29,7 +29,7 @@
             </StackPanel>
         </Viewbox>
         <Viewbox Stretch="Uniform" Grid.Row="1">
-            <TextBlock x:Name="txtRoundTime" Text="{Binding RM.Time}" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+            <TextBlock x:Name="txtRoundTime" Text="{Binding RM.Time}" HorizontalAlignment="Center" VerticalAlignment="Center"  Style="{DynamicResource digifont}"/>
         </Viewbox>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

@@ -39,12 +39,13 @@
                             <TextBox IsEnabled="{Binding IsChecked, ElementName=chckbxUseMaxRounds}" cal:Message.Attach="[Event PreviewTextInput] = [Action PreviewTextInput($source, $eventArgs)];" Name="MaxRounds" Grid.Column="6" Grid.Row="1" Width="52" Text="{Binding MaxRounds, Converter={StaticResource zeroCon}}" MaxLength="3" Style="{DynamicResource digifont}" FontSize="30" TextAlignment="center" />
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="Vorlage verwenden" Height="84" Name="grpbxRound" Padding="2, 2, 2 ,2" ToolTip="Minuten">
+                    <GroupBox Header="Vorlage verwenden" Height="111" Name="grpbxRound" Padding="2, 2, 2 ,2" ToolTip="Minuten">
                         <ListView ItemsSource="{Binding RoundTemplateCollection}">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Width="Auto" Header="Runde" DisplayMemberBinding="{Binding Round}" />
-                                    <GridViewColumn Width="Auto" Header="Pause" DisplayMemberBinding="{Binding Pause}"/>
+                                    <GridViewColumn Width="50" Header="Runde" DisplayMemberBinding="{Binding Round}" />
+                                    <GridViewColumn Width="50" Header="Pause" DisplayMemberBinding="{Binding Pause}"/>
+                                    <GridViewColumn Width="80" Header="Max. Runden" DisplayMemberBinding="{Binding MaxRounds, Converter={StaticResource zeroCon}}"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
