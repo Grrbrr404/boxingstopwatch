@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace TimeKeep.Domain {
+    using TimeKeep.Domain.Interfaces;
 
-namespace TimeKeep.Domain {
-  class PropertyRoundDefinition : IRoundDefinition {
+    class PropertyRoundDefinition : IRoundDefinition {
     public int GetMaxRounds() {
       return Properties.Settings.Default.MaxRounds;
     }
