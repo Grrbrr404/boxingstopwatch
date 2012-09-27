@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="A - Presentation\Converter\ZeroIntToSymbolConverter.cs" />
     <Compile Include="A - Presentation\Views\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
@@ -81,9 +82,11 @@
     <Compile Include="B - Application\ViewModels\IShell.cs" />
     <Compile Include="B - Application\ViewModels\ShellViewModel.cs" />
     <Compile Include="C - Domain\ManagerPhase.cs" />
-    <Compile Include="C - Domain\IRoundDefinition.cs" />
+    <Compile Include="C - Domain\Interfaces\IRoundDefinition.cs" />
     <Compile Include="C - Domain\PropertyRoundDefinition.cs" />
     <Compile Include="C - Domain\RoundManager.cs" />
+    <Compile Include="C - Domain\RoundTemplate.cs" />
+    <Compile Include="C - Domain\StaticRoundDefinition.cs" />
     <Compile Include="F - Foundation\Threading\BackgroundAction.cs" />
     <Compile Include="F - Foundation\Threading\BackgroundProcess.cs" />
     <Compile Include="F - Foundation\Threading\Interfaces\IBackgroundAction.cs" />
@@ -104,6 +107,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="A - Presentation\Fonts\DS-DIGI.TTF" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

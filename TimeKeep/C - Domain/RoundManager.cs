@@ -6,6 +6,7 @@ namespace TimeKeep.Domain
 
     using Caliburn.Micro;
 
+    using TimeKeep.Domain.Interfaces;
     using TimeKeep.Foundation.Threading;
     using TimeKeep.Foundation.Threading.Interfaces;
 
