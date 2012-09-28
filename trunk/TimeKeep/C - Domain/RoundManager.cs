@@ -64,16 +64,6 @@ namespace TimeKeep.Domain
             {
                 _countFinishedRounds = value;
                 NotifyOfPropertyChange(() => CountFinishedRounds);
-                NotifyOfPropertyChange(() => RoundText);
-            }
-        }
-
-        public string RoundText
-        {
-            get
-            {
-                var roundOffset = HasMaxRounds ? RoundDefinition.GetMaxRounds().ToString() : "\u221E";
-                return string.Format("{0} / {1}", CountFinishedRounds, roundOffset);
             }
         }
 
@@ -93,11 +83,11 @@ namespace TimeKeep.Domain
         /// <summary>
         /// Indicates if this RoundManager does use max rounds or not
         /// </summary>
-        public bool HasMaxRounds
+        public int MaxRounds
         {
             get
             {
-                return RoundDefinition.GetMaxRounds() > 0;
+                return RoundDefinition.GetMaxRounds();
             }
         }
 
@@ -145,6 +135,7 @@ namespace TimeKeep.Domain
             if (_timerAction == null) {
                 _timerAction = new BackgroundAction(RoundTimerTick);
                 _timerAction.Start();
+                CurrentRound = 1;
             }
         }
 
