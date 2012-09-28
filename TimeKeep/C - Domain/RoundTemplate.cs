@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TimeKeep.Domain
 {
     using TimeKeep.Domain.Interfaces;
 
+    [Serializable]
     public class RoundTemplate
     {
         public IRoundDefinition Definition { get; set; }
@@ -27,9 +25,12 @@ namespace TimeKeep.Domain
             }
         }
 
-        public int MaxRounds()
+        public int MaxRounds
         {
-            return Definition.GetMaxRounds();
+            get 
+            {
+                return Definition.GetMaxRounds();
+            }
         }
 
         public RoundTemplate(IRoundDefinition definition)

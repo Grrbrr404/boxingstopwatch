@@ -70,5 +70,16 @@ namespace TimeKeep.Properties {
                 this["PlaySound"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection RoundTemplates {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["RoundTemplates"]));
+            }
+            set {
+                this["RoundTemplates"] = value;
+            }
+        }
     }
 }
