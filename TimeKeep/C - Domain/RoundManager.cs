@@ -46,7 +46,7 @@ namespace TimeKeep.Domain
         #region Constructor
         public RoundManager(IRoundDefinition roundDef)
         {
-            _roundDefinition = roundDef;
+            SetDefinition(roundDef);
         }
         #endregion
 
@@ -110,9 +110,9 @@ namespace TimeKeep.Domain
             {
                 return string.Format(
                   "{0:00}:{1:00}:{2:00}",
-                  _remainingTimeOfPhase.Minutes,
-                  _remainingTimeOfPhase.Seconds,
-                  _remainingTimeOfPhase.Milliseconds / 10.0);
+                  RemainingTime.Minutes,
+                  RemainingTime.Seconds,
+                  RemainingTime.Milliseconds / 10.0);
             }
         }
 
@@ -127,6 +127,20 @@ namespace TimeKeep.Domain
             }
         }
 
+        public TimeSpan RemainingTime
+        {
+            get
+            {
+                return _remainingTimeOfPhase;
+            }
+            set
+            {
+                _remainingTimeOfPhase = value;
+                NotifyOfPropertyChange(() => RemainingTime);
+                NotifyOfPropertyChange(() => Time);
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -135,13 +149,18 @@ namespace TimeKeep.Domain
             if (_timerAction == null) {
                 _timerAction = new BackgroundAction(RoundTimerTick);
                 _timerAction.Start();
+                RemainingTime = TimeSpan.FromSeconds(_roundDefinition.GetRoundTimeInSeconds());
                 CurrentRound = 1;
             }
         }
 
-        public void Stop() {
-            _timerAction.Terminate();
-            _timerAction = null;
+        public void Stop()
+        {
+            if (_timerAction != null)
+            {
+                _timerAction.Terminate();
+                _timerAction = null;
+            }
         }
 
 
@@ -151,9 +170,9 @@ namespace TimeKeep.Domain
             {
                 Thread.Sleep(TIMER_INTERVAL);
 
-                _remainingTimeOfPhase = _remainingTimeOfPhase.Subtract(TimeSpan.FromMilliseconds(TIMER_INTERVAL));
+                RemainingTime = RemainingTime.Subtract(TimeSpan.FromMilliseconds(TIMER_INTERVAL));
 
-                if (_remainingTimeOfPhase < TimeSpan.Zero)
+                if (RemainingTime < TimeSpan.Zero)
                 {
                     ChangePhase();
                 }
@@ -169,17 +188,23 @@ namespace TimeKeep.Domain
                 case ManagerPhase.Round:
                     CountFinishedRounds++;
                     _phase = ManagerPhase.Pause;
-                    _remainingTimeOfPhase = TimeSpan.FromSeconds(RoundDefinition.GetPauseTimeInSeconds());
+                    RemainingTime = TimeSpan.FromSeconds(RoundDefinition.GetPauseTimeInSeconds());
                     break;
                 case ManagerPhase.Pause:
                     CurrentRound++;
                     _phase = ManagerPhase.Round;
-                    _remainingTimeOfPhase = TimeSpan.FromSeconds(RoundDefinition.GetRoundTimeInSeconds());
+                    RemainingTime = TimeSpan.FromSeconds(RoundDefinition.GetRoundTimeInSeconds());
                     break;
                 default:
                     throw new NotSupportedException("Unknown Phase not supported.");
             }
         }
         #endregion
+
+        public void SetDefinition(IRoundDefinition definition)
+        {
+            Stop();
+            _roundDefinition = definition;
+        }
     }
 }

@@ -98,8 +98,14 @@
         /// <summary>
         /// Opens Config Window
         /// </summary>
-        public void ShowConfigWindow() {
-            var result = _windowManager.ShowDialog(new ConfigViewModel(RM.RoundDefinition));
+        public void ShowConfigWindow()
+        {
+            var configDialog = new ConfigViewModel(RM.RoundDefinition);
+            var acceptChanges = _windowManager.ShowDialog(configDialog);
+            if (acceptChanges.HasValue && acceptChanges.Value)
+            {
+                RM.SetDefinition(configDialog.DialogResult);
+            }
         }
 
         /// <summary>
