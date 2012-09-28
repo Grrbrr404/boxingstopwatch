@@ -78,7 +78,7 @@
             <TabItem Header="Farben &amp; Töne" />
         </TabControl>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 10, 0">
-            <Button Width="80" IsDefault="True" cal:Message.Attach="[Event Click] = [Action AcceptChanges]">OK</Button>
+            <Button Width="80" cal:Message.Attach="[Event Click] = [Action AcceptChanges]">OK</Button>
             <Button Width="80" Margin="10, 0, 0, 0" IsCancel="True">Abbrechen</Button>
         </StackPanel>
     </StackPanel>

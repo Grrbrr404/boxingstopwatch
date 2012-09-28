@@ -118,7 +118,7 @@
         /// The e.
         /// </param>
         public void OnKeyUp(KeyEventArgs e) {
-            if (e.Key == Key.F11) {
+            if (e.Key == Key.F11 || (e.Key == Key.Escape && _isFullscreen)) {
                 ToggleFullscreen();
             }
         }
