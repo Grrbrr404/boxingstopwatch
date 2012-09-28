@@ -72,7 +72,7 @@ namespace TimeKeep.Domain
         {
             get
             {
-                var roundOffset = HasMaxRounds ? _roundDefinition.GetMaxRounds().ToString() : "\u221E";
+                var roundOffset = HasMaxRounds ? RoundDefinition.GetMaxRounds().ToString() : "\u221E";
                 return string.Format("{0} / {1}", CountFinishedRounds, roundOffset);
             }
         }
@@ -97,7 +97,7 @@ namespace TimeKeep.Domain
         {
             get
             {
-                return _roundDefinition.GetMaxRounds() > 0;
+                return RoundDefinition.GetMaxRounds() > 0;
             }
         }
 
@@ -123,6 +123,17 @@ namespace TimeKeep.Domain
                   _remainingTimeOfPhase.Minutes,
                   _remainingTimeOfPhase.Seconds,
                   _remainingTimeOfPhase.Milliseconds / 10.0);
+            }
+        }
+
+        /// <summary>
+        /// Round definition for this RoundManger instance.
+        /// </summary>
+        public IRoundDefinition RoundDefinition
+        {
+            get
+            {
+                return _roundDefinition;
             }
         }
 
@@ -167,12 +178,12 @@ namespace TimeKeep.Domain
                 case ManagerPhase.Round:
                     CountFinishedRounds++;
                     _phase = ManagerPhase.Pause;
-                    _remainingTimeOfPhase = TimeSpan.FromSeconds(_roundDefinition.GetPauseTimeInSeconds());
+                    _remainingTimeOfPhase = TimeSpan.FromSeconds(RoundDefinition.GetPauseTimeInSeconds());
                     break;
                 case ManagerPhase.Pause:
                     CurrentRound++;
                     _phase = ManagerPhase.Round;
-                    _remainingTimeOfPhase = TimeSpan.FromSeconds(_roundDefinition.GetRoundTimeInSeconds());
+                    _remainingTimeOfPhase = TimeSpan.FromSeconds(RoundDefinition.GetRoundTimeInSeconds());
                     break;
                 default:
                     throw new NotSupportedException("Unknown Phase not supported.");

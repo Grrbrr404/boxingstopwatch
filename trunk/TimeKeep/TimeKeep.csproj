@@ -45,7 +45,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\caliburnmicro\bin\WPF\Debug\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>F - Foundation\libs\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,6 +81,7 @@
     <Compile Include="B - Application\ViewModels\ConfigViewModel.cs" />
     <Compile Include="B - Application\ViewModels\IShell.cs" />
     <Compile Include="B - Application\ViewModels\ShellViewModel.cs" />
+    <Compile Include="C - Domain\Extensions\ExtensionMethods.cs" />
     <Compile Include="C - Domain\ManagerPhase.cs" />
     <Compile Include="C - Domain\Interfaces\IRoundDefinition.cs" />
     <Compile Include="C - Domain\PropertyRoundDefinition.cs" />
@@ -128,6 +129,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="F - Foundation\libs\System.Windows.Interactivity.dll" />
+    <Resource Include="F - Foundation\libs\System.Windows.Interactivity.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

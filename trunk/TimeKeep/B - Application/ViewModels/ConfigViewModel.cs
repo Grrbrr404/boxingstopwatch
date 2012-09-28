@@ -1,32 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace TimeKeep.Application.ViewModels
 {
+    using System;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.ComponentModel.Composition;
-    using System.Text.RegularExpressions;
+    using System.Linq;
     using System.Windows.Controls;
     using System.Windows.Input;
 
     using Caliburn.Micro;
 
     using TimeKeep.C.Domain;
+    using TimeKeep.C.Domain.Extensions;
     using TimeKeep.Domain;
+    using TimeKeep.Domain.Interfaces;
 
     [Export]
-    public class ConfigViewModel : PropertyChangedBase
+    public class ConfigViewModel : Screen
     {
+        private const int MAX_TEMPLATE = 5;
+
+        #region Fields
         private int _roundMinute;
 
-        private readonly ObservableCollection<RoundTemplate> _roundTemplateCollection;
+        private int _roundSecond;
+
+        private int _pauseMinute;
+
+        private int _pauseSecond;
+
+        private ObservableCollection<RoundTemplate> _roundTemplateCollection;
 
         private bool _useMaxRounds;
 
         private int _maxRounds;
 
+        private IRoundDefinition _result;
+
+        #endregion
+
+        #region Properties
         public int RoundMinute
         {
             get
@@ -46,6 +60,11 @@ namespace TimeKeep.Application.ViewModels
             get
             {
                 return _roundTemplateCollection;
+            }
+            private set
+            {
+                _roundTemplateCollection = value;
+                NotifyOfPropertyChange(() => RoundTemplateCollection);
             }
         }
 
@@ -77,24 +96,141 @@ namespace TimeKeep.Application.ViewModels
             {
                 _maxRounds = value;
                 NotifyOfPropertyChange(() => MaxRounds);
+
+                if (_maxRounds > 0)
+                {
+                    UseMaxRounds = true;
+                }
+                
             }
         }
 
-        public ConfigViewModel()
+        public int RoundSecond
         {
-            RoundMinute = 7;
-            _roundTemplateCollection = new ObservableCollection<RoundTemplate>
+            get
             {
-                new RoundTemplate(new StaticRoundDefinition {PauseInSeconds = 50, RoundInSeconds = 10}),
-                new RoundTemplate(new StaticRoundDefinition {PauseInSeconds = 20, RoundInSeconds = 5}),
-                new RoundTemplate(new StaticRoundDefinition {PauseInSeconds = 30, RoundInSeconds = 80}),
-                new RoundTemplate(new StaticRoundDefinition {PauseInSeconds = 40, RoundInSeconds = 100})
-            };
+                return _roundSecond;
+            }
+            set
+            {
+                _roundSecond = value;
+                NotifyOfPropertyChange(() => RoundSecond);
+            }
         }
+
+        public int PauseMinute
+        {
+            get
+            {
+                return _pauseMinute;
+            }
+            set
+            {
+                _pauseMinute = value;
+                NotifyOfPropertyChange(() => PauseMinute);
+            }
+        }
+
+        public int PauseSecond
+        {
+            get
+            {
+                return _pauseSecond;
+            }
+            set
+            {
+                _pauseSecond = value;
+                NotifyOfPropertyChange(() => PauseSecond);
+            }
+        }
+
+        public IRoundDefinition DialogResult
+        {
+            get
+            {
+                return _result;
+            }
+        }
+
+        #endregion
+
+        #region Constructor
+        [ImportingConstructor]
+        public ConfigViewModel(IRoundDefinition currentlyUsedDefinition)
+        {
+            LoadFromDefinition(currentlyUsedDefinition);
+            if (Properties.Settings.Default.RoundTemplates == null)
+            {
+                Properties.Settings.Default.RoundTemplates = new StringCollection();
+            }
+
+            RoundTemplateCollection = Properties.Settings.Default.RoundTemplates.ToRoundTemplateCollection();
+        }
+
+        #endregion 
 
         public void PreviewTextInput(TextBox sender, TextCompositionEventArgs e)
         {
             e.Handled = !e.Text.All(char.IsNumber);
+        }
+
+        public void LoadFromTemplate(object source, SelectionChangedEventArgs args)
+        {
+            if (args.AddedItems[0] is RoundTemplate)
+            {
+                var template = (RoundTemplate)args.AddedItems[0];
+                LoadFromDefinition(template.Definition);
+            }
+        }
+
+        public void LoadFromDefinition(IRoundDefinition definition)
+        {
+            var timeRounds = TimeSpan.FromSeconds(definition.GetRoundTimeInSeconds());
+            var timePause = TimeSpan.FromSeconds(definition.GetPauseTimeInSeconds());
+
+            RoundMinute = timeRounds.Minutes;
+            RoundSecond = timeRounds.Seconds;
+            PauseMinute = timePause.Minutes;
+            PauseSecond = timePause.Seconds;
+            MaxRounds = definition.GetMaxRounds();
+        }
+
+        public void AcceptChanges()
+        {
+            _result = new StaticRoundDefinition
+            {
+                MaxRounds = MaxRounds,
+                RoundInSeconds = RoundMinute * 60 + RoundSecond,
+                PauseInSeconds = PauseMinute * 60 + PauseSecond
+            };
+
+            AddDefinitionToHistory(_result);
+
+            Properties.Settings.Default.Save();
+            TryClose(true);
+        }
+
+        private void AddDefinitionToHistory(IRoundDefinition definition)
+        {
+            var count = RoundTemplateCollection.Count(
+                item =>
+                item.Definition.GetMaxRounds() == definition.GetMaxRounds()
+                && item.Definition.GetPauseTimeInSeconds() == definition.GetPauseTimeInSeconds()
+                && item.Definition.GetRoundTimeInSeconds() == definition.GetRoundTimeInSeconds());
+
+            if (count == 0)
+            {
+                // Item config does not exist in template collection
+                var itemToAdd = new RoundTemplate(definition);
+                RoundTemplateCollection.Insert(0, itemToAdd);   
+
+                if (RoundTemplateCollection.Count > MAX_TEMPLATE) {
+                    // History is full, remove oldest item
+                    RoundTemplateCollection.RemoveAt(RoundTemplateCollection.Count - 1);
+                }
+                
+                Properties.Settings.Default.RoundTemplates = RoundTemplateCollection.ToStringCollection();
+            }
         }
     }
 }

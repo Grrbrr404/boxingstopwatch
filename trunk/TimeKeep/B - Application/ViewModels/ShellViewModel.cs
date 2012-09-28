@@ -99,7 +99,7 @@
         /// Opens Config Window
         /// </summary>
         public void ShowConfigWindow() {
-            var result = _windowManager.ShowDialog(IoC.Get<ConfigViewModel>());
+            var result = _windowManager.ShowDialog(new ConfigViewModel(RM.RoundDefinition));
         }
 
         /// <summary>
