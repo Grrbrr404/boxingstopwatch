@@ -9,7 +9,7 @@
                 <ResourceDictionary>
                     <local:AppBootstrapper x:Key="bootstrapper" />
                     <Style x:Key="digifont">
-                        <Setter Property="TextElement.FontFamily" Value="/TimeKeep;component/A - Presentation/Fonts/#DS-Digital" />
+                        <Setter Property="TextElement.FontFamily" Value="/TimeKeep;component/A - Presentation/Fonts/#digital-7 mono" />
                     </Style>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

@@ -107,7 +107,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="A - Presentation\Fonts\DS-DIGI.TTF" />
+    <Resource Include="A - Presentation\Fonts\digital-7.ttf" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
