@@ -1,6 +1,6 @@
 ﻿<Window x:Class="TimeKeep.Presentation.Views.ShellView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" xmlns:Converter="clr-namespace:TimeKeep.A.Presentation.Converter" Title="ShellView" Height="320" Width="533"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" xmlns:Converter="clr-namespace:TimeKeep.A.Presentation.Converter" Title="Stopwatch" Height="320" Width="533"
         cal:Message.Attach="[Event Closing] = [OnClosing]; [Event KeyUp] = [OnKeyUp($eventArgs)]"
         WindowState="{Binding WinState}"
         WindowStyle="{Binding WinStyle}">

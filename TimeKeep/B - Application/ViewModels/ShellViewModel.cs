@@ -1,4 +1,5 @@
-﻿namespace TimeKeep.Application.ViewModels {
+﻿namespace TimeKeep.Application.ViewModels
+{
     using System.ComponentModel.Composition;
     using System.Windows;
     using System.Windows.Input;
@@ -6,13 +7,15 @@
     using Caliburn.Micro;
 
     using TimeKeep.Domain;
+    using System.Threading;
 
     /// <summary>
     /// The shell view model.
     /// </summary>
     [Export(typeof(IShell))]
-    public class ShellViewModel : PropertyChangedBase {
-   
+    public class ShellViewModel : PropertyChangedBase
+    {
+
         #region Constants and Fields
 
         /// <summary>
@@ -45,7 +48,8 @@
         /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
         /// </summary>
         [ImportingConstructor]
-        public ShellViewModel(IWindowManager windowManager) {
+        public ShellViewModel(IWindowManager windowManager)
+        {
             _windowManager = windowManager;
             SetWindowMode();
         }
@@ -57,8 +61,10 @@
         /// <summary>
         /// Gets RM.
         /// </summary>
-        public RoundManager RM {
-            get {
+        public RoundManager RM
+        {
+            get
+            {
                 return _roundManager;
             }
         }
@@ -66,12 +72,15 @@
         /// <summary>
         /// Gets or sets WinState.
         /// </summary>
-        public WindowState WinState {
-            get {
+        public WindowState WinState
+        {
+            get
+            {
                 return _windowState;
             }
 
-            set {
+            set
+            {
                 _windowState = value;
                 NotifyOfPropertyChange(() => WinState);
             }
@@ -80,12 +89,15 @@
         /// <summary>
         /// Gets or sets WinStyle.
         /// </summary>
-        public WindowStyle WinStyle {
-            get {
+        public WindowStyle WinStyle
+        {
+            get
+            {
                 return _windowStyle;
             }
 
-            set {
+            set
+            {
                 _windowStyle = value;
                 NotifyOfPropertyChange(() => WinStyle);
             }
@@ -105,14 +117,18 @@
             if (acceptChanges.HasValue && acceptChanges.Value)
             {
                 RM.SetDefinition(configDialog.DialogResult);
+                RM.Stop();
+                RM.Reset();
             }
         }
 
         /// <summary>
         /// Executed ShellView is closed
         /// </summary>
-        public void OnClosing() {
-            if (_roundManager.IsRunning) {
+        public void OnClosing()
+        {
+            if (_roundManager.IsRunning)
+            {
                 _roundManager.Stop();
             }
         }
@@ -123,8 +139,10 @@
         /// <param name="e">
         /// The e.
         /// </param>
-        public void OnKeyUp(KeyEventArgs e) {
-            if (e.Key == Key.F11 || (e.Key == Key.Escape && _isFullscreen)) {
+        public void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.Key == Key.F11 || (e.Key == Key.Escape && _isFullscreen))
+            {
                 ToggleFullscreen();
             }
         }
@@ -132,14 +150,16 @@
         /// <summary>
         /// The start timer.
         /// </summary>
-        public void StartTimer() {
+        public void StartTimer()
+        {
             _roundManager.Start();
         }
 
         /// <summary>
         /// The stop timer.
         /// </summary>
-        public void StopTimer() {
+        public void StopTimer()
+        {
             _roundManager.Stop();
         }
 
@@ -150,7 +170,8 @@
         /// <summary>
         /// The set fullscreen mode.
         /// </summary>
-        private void SetFullscreenMode() {
+        private void SetFullscreenMode()
+        {
             WinState = WindowState.Maximized;
             WinStyle = WindowStyle.None;
             _isFullscreen = true;
@@ -159,7 +180,8 @@
         /// <summary>
         /// The set window mode.
         /// </summary>
-        private void SetWindowMode() {
+        private void SetWindowMode()
+        {
             WinState = WindowState.Normal;
             WinStyle = WindowStyle.SingleBorderWindow;
             _isFullscreen = false;
@@ -168,11 +190,14 @@
         /// <summary>
         /// The toggle fullscreen.
         /// </summary>
-        private void ToggleFullscreen() {
-            if (_isFullscreen) {
+        private void ToggleFullscreen()
+        {
+            if (_isFullscreen)
+            {
                 SetWindowMode();
             }
-            else {
+            else
+            {
                 SetFullscreenMode();
             }
         }

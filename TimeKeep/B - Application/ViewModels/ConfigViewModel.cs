@@ -78,10 +78,10 @@ namespace TimeKeep.Application.ViewModels
             {
                 _useMaxRounds = value;
                 NotifyOfPropertyChange(() => UseMaxRounds);
-                
+
                 if (!_useMaxRounds)
                 {
-                    MaxRounds = 0;
+                    _maxRounds = 0;
                 }
             }
         }
@@ -95,13 +95,8 @@ namespace TimeKeep.Application.ViewModels
             set
             {
                 _maxRounds = value;
+                UseMaxRounds = _maxRounds > 0;
                 NotifyOfPropertyChange(() => MaxRounds);
-
-                if (_maxRounds > 0)
-                {
-                    UseMaxRounds = true;
-                }
-                
             }
         }
 
@@ -167,7 +162,7 @@ namespace TimeKeep.Application.ViewModels
             RoundTemplateCollection = Properties.Settings.Default.RoundTemplates.ToRoundTemplateCollection();
         }
 
-        #endregion 
+        #endregion
 
         public void PreviewTextInput(TextBox sender, TextCompositionEventArgs e)
         {
@@ -183,6 +178,20 @@ namespace TimeKeep.Application.ViewModels
             }
         }
 
+        public void LoadFromTemplateAndCloseDialog(object source, MouseButtonEventArgs args)
+        {
+            if (args.ClickCount == 2) {
+                var listv = source as ListView;
+                if (listv != null) {
+                    if (listv.SelectedItem != null) {
+                        var template = (RoundTemplate)listv.SelectedItem;
+                        LoadFromDefinition(template.Definition);
+                        AcceptChanges();
+                    }
+                }
+            }
+        }
+
         public void LoadFromDefinition(IRoundDefinition definition)
         {
             var timeRounds = TimeSpan.FromSeconds(definition.GetRoundTimeInSeconds());
@@ -194,6 +203,8 @@ namespace TimeKeep.Application.ViewModels
             PauseSecond = timePause.Seconds;
             MaxRounds = definition.GetMaxRounds();
         }
+
+
 
         public void AcceptChanges()
         {
@@ -222,13 +233,14 @@ namespace TimeKeep.Application.ViewModels
             {
                 // Item config does not exist in template collection
                 var itemToAdd = new RoundTemplate(definition);
-                RoundTemplateCollection.Insert(0, itemToAdd);   
+                RoundTemplateCollection.Insert(0, itemToAdd);
 
-                if (RoundTemplateCollection.Count > MAX_TEMPLATE) {
+                if (RoundTemplateCollection.Count > MAX_TEMPLATE)
+                {
                     // History is full, remove oldest item
                     RoundTemplateCollection.RemoveAt(RoundTemplateCollection.Count - 1);
                 }
-                
+
                 Properties.Settings.Default.RoundTemplates = RoundTemplateCollection.ToStringCollection();
             }
         }
