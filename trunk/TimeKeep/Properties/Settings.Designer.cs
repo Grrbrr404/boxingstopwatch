@@ -81,5 +81,29 @@ namespace TimeKeep.Properties {
                 this["RoundTemplates"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFFFF")]
+        public string DisplayBackgroundColor {
+            get {
+                return ((string)(this["DisplayBackgroundColor"]));
+            }
+            set {
+                this["DisplayBackgroundColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#000000")]
+        public string FontColor {
+            get {
+                return ((string)(this["FontColor"]));
+            }
+            set {
+                this["FontColor"] = value;
+            }
+        }
     }
 }
