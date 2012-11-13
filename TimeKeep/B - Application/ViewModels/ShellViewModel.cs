@@ -11,6 +11,10 @@
 
     using Xceed.Wpf.Toolkit;
     using System.Windows.Media;
+    using TimeKeep.Domain.WebControlService;
+    using System.Net;
+    using System;
+    using System.Threading;
 
     /// <summary>
     /// The shell view model.
@@ -29,7 +33,7 @@
         /// <summary>
         ///   Class that calculates remaining time of round and pause
         /// </summary>
-        private RoundManager _roundManager = new RoundManager(new PropertyRoundDefinition());
+        private readonly RoundManager _roundManager;
 
         /// <summary>
         /// The _window state.
@@ -40,6 +44,9 @@
         /// The _window style.
         /// </summary>
         private WindowStyle _windowStyle;
+
+
+        private WebServer _webControlService;
 
         private readonly IWindowManager _windowManager;
 
@@ -54,7 +61,36 @@
         public ShellViewModel(IWindowManager windowManager)
         {
             _windowManager = windowManager;
+            _roundManager = new RoundManager(new PropertyRoundDefinition());
+            _roundManager.OnPhaseChanged += DoRoundManagerPhaseChanged;
+            _webControlService = new WebServer(SendResponse, "http://*:8080/");
+            _webControlService.Run();
+
             SetWindowMode();
+        }
+
+        private string SendResponse(HttpListenerRequest request)
+        {
+            var result = string.Format("<HTML><HEAD></HEAD><BODY><div style='padding:5px;'><a href='?action=start'/><input type='button' value='Start' style='width:100%;height:40%;'/></a><div style='height:15%'>&nbsp;</div><a href='?action=stop'/><input type='button' value='Stop' style='width:100%;height:40%;'/></a></div></HTML>");
+
+            if (request.QueryString["action"] == "stop")
+            {
+                RM.Stop();
+                Thread.Sleep(100);
+                RM.Reset();
+            }
+            else if (request.QueryString["action"] == "start")
+            {
+                RM.Start();
+            }
+            return result;
+
+        }
+
+        private void DoRoundManagerPhaseChanged(object sender, ManagerPhase newPhase)
+        {
+            NotifyOfPropertyChange(() => WindowBackgroundColor);
+            NotifyOfPropertyChange(() => FontColor);
         }
 
         #endregion
@@ -110,7 +146,7 @@
         {
             get
             {
-                var color = Settings.Default.DisplayBackgroundColor;
+                var color = RM.CurrentPhase == ManagerPhase.Round ? Settings.Default.DisplayBackgroundColor : Settings.Default.DisplayBackgroundColorPause;
                 if (string.IsNullOrEmpty(color))
                 {
                     color = "#FFFFFF";
@@ -123,7 +159,7 @@
         {
             get
             {
-                var color = Settings.Default.FontColor;
+                var color = RM.CurrentPhase == ManagerPhase.Round ? Settings.Default.FontColor : Settings.Default.FontColorPause;
                 if (string.IsNullOrEmpty(color))
                 {
                     color = "#000000";
@@ -147,6 +183,7 @@
             {
                 RM.SetDefinition(configDialog.DialogResult);
                 RM.Stop();
+                Thread.Sleep(100);
                 RM.Reset();
                 NotifyOfPropertyChange(() => WindowBackgroundColor);
                 NotifyOfPropertyChange(() => FontColor);
@@ -162,6 +199,8 @@
             {
                 _roundManager.Stop();
             }
+
+            _webControlService.Stop();
         }
 
         /// <summary>
@@ -192,6 +231,7 @@
         public void StopTimer()
         {
             _roundManager.Stop();
+            Thread.Sleep(100);
             _roundManager.Reset();
         }
 

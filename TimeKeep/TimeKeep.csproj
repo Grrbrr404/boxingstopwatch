@@ -79,6 +79,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="C - Domain\WebControlService\WebServer.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +125,7 @@
   <ItemGroup>
     <Folder Include="D - Business Infrastructure\" />
     <Folder Include="E - Technical Service\" />
+    <Folder Include="F - Foundation\HttpServer\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="A - Presentation\Views\ConfigView.xaml">
@@ -136,6 +138,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="F - Foundation\libs\Caliburn.Micro.dll" />
     <Content Include="F - Foundation\libs\System.Windows.Interactivity.dll" />
     <Content Include="F - Foundation\libs\WPFToolkit.Extended.dll" />
     <Resource Include="F - Foundation\libs\System.Windows.Interactivity.xml" />

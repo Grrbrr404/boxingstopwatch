@@ -170,6 +170,26 @@ namespace TimeKeep.Application.ViewModels
             }
         }
 
+        public Color DisplayBackgroundColorPause
+        {
+            get
+            {
+                var color = Settings.Default.DisplayBackgroundColorPause;
+                if (string.IsNullOrEmpty(color))
+                {
+                    color = "#FFFFFF";
+                }
+                return (Color)ColorConverter.ConvertFromString(color);
+            }
+
+            set
+            {
+                Settings.Default.DisplayBackgroundColorPause = value.ToString();
+                Settings.Default.Save();
+                NotifyOfPropertyChange(() => DisplayBackgroundColorPause);
+            }
+        }
+
         public Color FontColor
         {
             get
@@ -190,6 +210,26 @@ namespace TimeKeep.Application.ViewModels
             }
         }
 
+        public Color FontColorPause
+        {
+            get
+            {
+                var color = Settings.Default.FontColorPause;
+                if (string.IsNullOrEmpty(color))
+                {
+                    color = "#000000";
+                }
+                return (Color)ColorConverter.ConvertFromString(color);
+            }
+
+            set
+            {
+                Settings.Default.FontColorPause = value.ToString();
+                Settings.Default.Save();
+                NotifyOfPropertyChange(() => FontColorPause);
+            }
+        }
+
         #endregion
 
         #region Properties Common
@@ -207,6 +247,7 @@ namespace TimeKeep.Application.ViewModels
         [ImportingConstructor]
         public ConfigViewModel(IRoundDefinition currentlyUsedDefinition)
         {
+            DisplayName = "Konfiguration";
             LoadFromDefinition(currentlyUsedDefinition);
             if (Properties.Settings.Default.RoundTemplates == null)
             {
