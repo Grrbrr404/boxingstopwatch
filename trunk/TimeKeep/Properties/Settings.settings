@@ -23,5 +23,11 @@
     <Setting Name="FontColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#000000</Value>
     </Setting>
+    <Setting Name="DisplayBackgroundColorPause" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFFFF</Value>
+    </Setting>
+    <Setting Name="FontColorPause" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#000000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

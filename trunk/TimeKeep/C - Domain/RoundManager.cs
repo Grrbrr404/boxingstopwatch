@@ -44,6 +44,10 @@ namespace TimeKeep.Domain
         #endregion
 
         #region Constructor
+
+        public delegate void PhaseChangedHandler(object sender, ManagerPhase newPhase);
+        public event PhaseChangedHandler OnPhaseChanged;
+        
         public RoundManager(IRoundDefinition roundDef)
         {
             SetDefinition(roundDef);
@@ -130,6 +134,10 @@ namespace TimeKeep.Domain
             }
         }
 
+        
+        /// <summary>
+        /// Gets or sets the remaining time of the current phase as timespan
+        /// </summary>
         public TimeSpan RemainingTime
         {
             get
@@ -141,6 +149,17 @@ namespace TimeKeep.Domain
                 _remainingTimeOfPhase = value;
                 NotifyOfPropertyChange(() => RemainingTime);
                 NotifyOfPropertyChange(() => Time);
+            }
+        }
+
+        /// <summary>
+        /// Gets the current phase of the round manager
+        /// </summary>
+        public ManagerPhase CurrentPhase
+        {
+            get
+            {
+                return _phase;
             }
         }
 
@@ -168,6 +187,10 @@ namespace TimeKeep.Domain
 
         public void Reset() {
             _phase = ManagerPhase.Round;
+            if (OnPhaseChanged != null)
+            {
+                OnPhaseChanged(this, _phase);
+            }
             CountFinishedRounds = 0;
             CurrentRound = 0;
             RemainingTime = TimeSpan.Zero;
@@ -177,16 +200,19 @@ namespace TimeKeep.Domain
         {
             while (IsRunning)
             {
-                Thread.Sleep(TIMER_INTERVAL);
-
-                RemainingTime = RemainingTime.Subtract(TimeSpan.FromMilliseconds(TIMER_INTERVAL));
-
-                if (RemainingTime < TimeSpan.Zero)
+                if (!backgroundAction.IsTerminated)
                 {
-                    ChangePhase();
-                }
+                    Thread.Sleep(TIMER_INTERVAL);
 
-                NotifyOfPropertyChange(() => Time);
+                    RemainingTime = RemainingTime.Subtract(TimeSpan.FromMilliseconds(TIMER_INTERVAL));
+
+                    if (RemainingTime < TimeSpan.Zero)
+                    {
+                        ChangePhase();
+                    }
+
+                    NotifyOfPropertyChange(() => Time);
+                }
             }
         }
 
@@ -206,6 +232,11 @@ namespace TimeKeep.Domain
                     break;
                 default:
                     throw new NotSupportedException("Unknown Phase not supported.");
+            }
+
+            if (OnPhaseChanged != null)
+            {
+                OnPhaseChanged(this, _phase);
             }
         }
         #endregion

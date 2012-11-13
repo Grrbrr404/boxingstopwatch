@@ -105,5 +105,29 @@ namespace TimeKeep.Properties {
                 this["FontColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFFFF")]
+        public string DisplayBackgroundColorPause {
+            get {
+                return ((string)(this["DisplayBackgroundColorPause"]));
+            }
+            set {
+                this["DisplayBackgroundColorPause"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#000000")]
+        public string FontColorPause {
+            get {
+                return ((string)(this["FontColorPause"]));
+            }
+            set {
+                this["FontColorPause"] = value;
+            }
+        }
     }
 }
