@@ -212,7 +212,7 @@ namespace TimeKeep.Application.ViewModels
             {
                 Properties.Settings.Default.RoundTemplates = new StringCollection();
             }
-
+            
             RoundTemplateCollection = Properties.Settings.Default.RoundTemplates.ToRoundTemplateCollection();
         }
 
