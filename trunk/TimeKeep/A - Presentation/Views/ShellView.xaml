@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" xmlns:Converter="clr-namespace:TimeKeep.A.Presentation.Converter" Title="Stopwatch" Height="320" Width="533"
         cal:Message.Attach="[Event Closing] = [OnClosing]; [Event KeyUp] = [OnKeyUp($eventArgs)]"
         WindowState="{Binding WinState}"
-        WindowStyle="{Binding WinStyle}">
+        WindowStyle="{Binding WinStyle}" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
