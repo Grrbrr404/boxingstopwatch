@@ -40,7 +40,7 @@
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="Vorlage verwenden" Height="131" Name="grpbxRound" Padding="2, 2, 2 ,2" Margin="0, 5, 0 ,0" ToolTip="Minuten">
-                        <ListView ItemsSource="{Binding RoundTemplateCollection}" cal:Message.Attach="[Event SelectionChanged] = [Action LoadFromTemplate($source, $eventArgs)]">
+                        <ListView ItemsSource="{Binding RoundTemplateCollection}" cal:Message.Attach="[Event SelectionChanged] = [Action LoadFromTemplate($source, $eventArgs)]; [Event PreviewMouseDown] = [Action LoadFromTemplateAndCloseDialog($source, $eventArgs)]">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />

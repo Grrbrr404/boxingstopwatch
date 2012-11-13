@@ -104,6 +104,9 @@ namespace TimeKeep.Domain
             }
         }
 
+        /// <summary>
+        /// Time since current phase start as string (00:00:00)
+        /// </summary>
         public string Time
         {
             get
@@ -163,6 +166,12 @@ namespace TimeKeep.Domain
             }
         }
 
+        public void Reset() {
+            _phase = ManagerPhase.Round;
+            CountFinishedRounds = 0;
+            CurrentRound = 0;
+            RemainingTime = TimeSpan.Zero;
+        }
 
         private void RoundTimerTick(IBackgroundAction backgroundAction)
         {
