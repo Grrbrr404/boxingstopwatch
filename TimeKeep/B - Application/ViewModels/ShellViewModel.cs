@@ -7,7 +7,10 @@
     using Caliburn.Micro;
 
     using TimeKeep.Domain;
-    using System.Threading;
+    using TimeKeep.Properties;
+
+    using Xceed.Wpf.Toolkit;
+    using System.Windows.Media;
 
     /// <summary>
     /// The shell view model.
@@ -31,7 +34,7 @@
         /// <summary>
         /// The _window state.
         /// </summary>
-        private WindowState _windowState;
+        private System.Windows.WindowState _windowState;
 
         /// <summary>
         /// The _window style.
@@ -72,7 +75,7 @@
         /// <summary>
         /// Gets or sets WinState.
         /// </summary>
-        public WindowState WinState
+        public System.Windows.WindowState WinState
         {
             get
             {
@@ -103,6 +106,32 @@
             }
         }
 
+        public Color WindowBackgroundColor
+        {
+            get
+            {
+                var color = Settings.Default.DisplayBackgroundColor;
+                if (string.IsNullOrEmpty(color))
+                {
+                    color = "#FFFFFF";
+                }
+                return (Color)ColorConverter.ConvertFromString(color);
+            }
+        }
+
+        public Color FontColor
+        {
+            get
+            {
+                var color = Settings.Default.FontColor;
+                if (string.IsNullOrEmpty(color))
+                {
+                    color = "#000000";
+                }
+                return (Color)ColorConverter.ConvertFromString(color);
+            }
+        }
+
         #endregion
 
         #region Public Methods
@@ -119,6 +148,8 @@
                 RM.SetDefinition(configDialog.DialogResult);
                 RM.Stop();
                 RM.Reset();
+                NotifyOfPropertyChange(() => WindowBackgroundColor);
+                NotifyOfPropertyChange(() => FontColor);
             }
         }
 
@@ -161,6 +192,7 @@
         public void StopTimer()
         {
             _roundManager.Stop();
+            _roundManager.Reset();
         }
 
         #endregion
@@ -172,7 +204,7 @@
         /// </summary>
         private void SetFullscreenMode()
         {
-            WinState = WindowState.Maximized;
+            WinState = System.Windows.WindowState.Maximized;
             WinStyle = WindowStyle.None;
             _isFullscreen = true;
         }
@@ -182,7 +214,7 @@
         /// </summary>
         private void SetWindowMode()
         {
-            WinState = WindowState.Normal;
+            WinState = System.Windows.WindowState.Normal;
             WinStyle = WindowStyle.SingleBorderWindow;
             _isFullscreen = false;
         }

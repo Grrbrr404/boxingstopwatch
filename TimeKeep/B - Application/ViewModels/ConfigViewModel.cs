@@ -5,9 +5,11 @@ namespace TimeKeep.Application.ViewModels
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
     using System.ComponentModel.Composition;
+
     using System.Linq;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     using Caliburn.Micro;
 
@@ -15,6 +17,7 @@ namespace TimeKeep.Application.ViewModels
     using TimeKeep.C.Domain.Extensions;
     using TimeKeep.Domain;
     using TimeKeep.Domain.Interfaces;
+    using TimeKeep.Properties;
 
     [Export]
     public class ConfigViewModel : Screen
@@ -38,9 +41,11 @@ namespace TimeKeep.Application.ViewModels
 
         private IRoundDefinition _result;
 
+        private Color _displayBackgroundColor;
+
         #endregion
 
-        #region Properties
+        #region Properties Template Tab
         public int RoundMinute
         {
             get
@@ -139,6 +144,55 @@ namespace TimeKeep.Application.ViewModels
             }
         }
 
+
+
+        #endregion
+
+        #region Properties Sound & Color Tab
+
+        public Color DisplayBackgroundColor
+        {
+            get
+            {
+                var color = Settings.Default.DisplayBackgroundColor;
+                if (string.IsNullOrEmpty(color))
+                {
+                    color = "#FFFFFF";
+                }
+                return (Color)ColorConverter.ConvertFromString(color);
+            }
+
+            set
+            {
+                Settings.Default.DisplayBackgroundColor = value.ToString();
+                Settings.Default.Save();
+                NotifyOfPropertyChange(() => DisplayBackgroundColor);
+            }
+        }
+
+        public Color FontColor
+        {
+            get
+            {
+                var color = Settings.Default.FontColor;
+                if (string.IsNullOrEmpty(color))
+                {
+                    color = "#000000";
+                }
+                return (Color)ColorConverter.ConvertFromString(color);
+            }
+
+            set
+            {
+                Settings.Default.FontColor = value.ToString();
+                Settings.Default.Save();
+                NotifyOfPropertyChange(() => FontColor);
+            }
+        }
+
+        #endregion
+
+        #region Properties Common
         public IRoundDefinition DialogResult
         {
             get
@@ -180,10 +234,13 @@ namespace TimeKeep.Application.ViewModels
 
         public void LoadFromTemplateAndCloseDialog(object source, MouseButtonEventArgs args)
         {
-            if (args.ClickCount == 2) {
+            if (args.ClickCount == 2)
+            {
                 var listv = source as ListView;
-                if (listv != null) {
-                    if (listv.SelectedItem != null) {
+                if (listv != null)
+                {
+                    if (listv.SelectedItem != null)
+                    {
                         var template = (RoundTemplate)listv.SelectedItem;
                         LoadFromDefinition(template.Definition);
                         AcceptChanges();
