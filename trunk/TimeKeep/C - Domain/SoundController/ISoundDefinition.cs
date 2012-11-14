@@ -6,7 +6,7 @@
 
     public interface ISoundDefinition {
 
-        string SoundSource { get; set; }
+        string SoundLocation { get; set; }
 
         /// <summary>
         /// Display name

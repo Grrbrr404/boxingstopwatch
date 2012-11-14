@@ -221,6 +221,10 @@ namespace TimeKeep.Domain.RoundManager
                     if (RemainingTime <= TimeSpan.Zero && RemainingTime != TimeSpan.MinValue) {
                         if (stopOnRoundEnd) {
                             Stop();
+                            Reset();
+                            // Set current round property again after reset, so that user can see that max round has reached (displayed in gui)
+                            CurrentRound = RoundDefinition.GetMaxRounds();
+                            break;
                         }
                             
                         ChangePhase();
