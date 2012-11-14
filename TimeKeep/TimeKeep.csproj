@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\..\caliburnmicro\bin\WPF\Debug\Caliburn.Micro.dll</HintPath>
@@ -143,6 +146,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="A - Presentation\Images\app.ico" />
+    <Resource Include="app.ico" />
     <Content Include="Sounds\roundend-bell.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
