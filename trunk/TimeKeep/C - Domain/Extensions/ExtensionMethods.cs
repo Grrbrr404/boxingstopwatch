@@ -3,7 +3,7 @@
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
 
-    using TimeKeep.Domain;
+    using TimeKeep.Domain.RoundManager;
 
     public static class ExtensionMethods
     {

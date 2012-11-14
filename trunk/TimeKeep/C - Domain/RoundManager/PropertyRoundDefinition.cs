@@ -1,6 +1,5 @@
-﻿namespace TimeKeep.Domain {
-    using TimeKeep.Domain.Interfaces;
-
+﻿namespace TimeKeep.Domain.RoundManager
+{
     class PropertyRoundDefinition : IRoundDefinition {
     public int GetMaxRounds() {
       return Properties.Settings.Default.MaxRounds;

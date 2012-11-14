@@ -1,12 +1,13 @@
 ﻿using System;
 
-namespace TimeKeep.Domain
+namespace TimeKeep.Domain.RoundManager
 {
+    using System.Media;
     using System.Threading;
 
     using Caliburn.Micro;
 
-    using TimeKeep.Domain.Interfaces;
+    using TimeKeep.Domain.SoundController;
     using TimeKeep.Foundation.Threading;
     using TimeKeep.Foundation.Threading.Interfaces;
 
@@ -41,6 +42,8 @@ namespace TimeKeep.Domain
 
         private TimeSpan _remainingTimeOfPhase = TimeSpan.Zero;
 
+        private readonly SoundManager _soundManager;
+
         #endregion
 
         #region Constructor
@@ -51,6 +54,7 @@ namespace TimeKeep.Domain
         public RoundManager(IRoundDefinition roundDef)
         {
             SetDefinition(roundDef);
+            _soundManager = new SoundManager();
         }
         #endregion
 
@@ -205,15 +209,19 @@ namespace TimeKeep.Domain
                     Thread.Sleep(TIMER_INTERVAL);
 
                     RemainingTime = RemainingTime.Subtract(TimeSpan.FromMilliseconds(TIMER_INTERVAL));
-
-                    if (RemainingTime < TimeSpan.Zero)
-                    {
+                    ProcessSounds(RemainingTime);
+                    if (RemainingTime <= TimeSpan.Zero) {
                         ChangePhase();
                     }
 
                     NotifyOfPropertyChange(() => Time);
                 }
             }
+        }
+
+        private void ProcessSounds(TimeSpan time)
+        { 
+            _soundManager.ProcessSounds(time, _phase);
         }
 
         private void ChangePhase()

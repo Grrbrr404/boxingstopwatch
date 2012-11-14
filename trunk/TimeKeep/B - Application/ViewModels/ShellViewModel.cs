@@ -6,14 +6,12 @@
 
     using Caliburn.Micro;
 
-    using TimeKeep.Domain;
+    using TimeKeep.Domain.RoundManager;
     using TimeKeep.Properties;
 
-    using Xceed.Wpf.Toolkit;
     using System.Windows.Media;
     using TimeKeep.Domain.WebControlService;
     using System.Net;
-    using System;
     using System.Threading;
 
     /// <summary>

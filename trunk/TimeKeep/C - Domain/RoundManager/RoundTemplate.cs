@@ -1,9 +1,7 @@
 ﻿using System;
 
-namespace TimeKeep.Domain
+namespace TimeKeep.Domain.RoundManager
 {
-    using TimeKeep.Domain.Interfaces;
-
     [Serializable]
     public class RoundTemplate
     {

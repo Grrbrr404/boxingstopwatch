@@ -1,4 +1,4 @@
-namespace TimeKeep.Domain.Interfaces {
+namespace TimeKeep.Domain.RoundManager {
   public interface IRoundDefinition {
     
     /// <summary>
