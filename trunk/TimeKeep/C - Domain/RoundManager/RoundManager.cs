@@ -119,11 +119,13 @@ namespace TimeKeep.Domain.RoundManager
         {
             get
             {
+                // We dont want to have negative values here
+                var ts = RemainingTime == TimeSpan.MinValue ? TimeSpan.Zero : RemainingTime;
                 return string.Format(
                   "{0:00}:{1:00}:{2:00}",
-                  RemainingTime.Minutes,
-                  RemainingTime.Seconds,
-                  RemainingTime.Milliseconds / 10.0);
+                  ts.Minutes,
+                  ts.Seconds,
+                  ts.Milliseconds / 10.0);
             }
         }
 
@@ -165,6 +167,11 @@ namespace TimeKeep.Domain.RoundManager
             {
                 return _phase;
             }
+            private set
+            {
+                _phase = value;
+                NotifyOfPropertyChange(() => CurrentPhase);
+            }
         }
 
         #endregion
@@ -190,18 +197,19 @@ namespace TimeKeep.Domain.RoundManager
         }
 
         public void Reset() {
-            _phase = ManagerPhase.Round;
+            CurrentPhase = ManagerPhase.Round;
             if (OnPhaseChanged != null)
             {
-                OnPhaseChanged(this, _phase);
+                OnPhaseChanged(this, CurrentPhase);
             }
             CountFinishedRounds = 0;
             CurrentRound = 0;
-            RemainingTime = TimeSpan.Zero;
+            _remainingTimeOfPhase = TimeSpan.MinValue;
         }
 
         private void RoundTimerTick(IBackgroundAction backgroundAction)
         {
+            bool stopOnRoundEnd = false;
             while (IsRunning)
             {
                 if (!backgroundAction.IsTerminated)
@@ -210,8 +218,13 @@ namespace TimeKeep.Domain.RoundManager
 
                     RemainingTime = RemainingTime.Subtract(TimeSpan.FromMilliseconds(TIMER_INTERVAL));
                     ProcessSounds(RemainingTime);
-                    if (RemainingTime <= TimeSpan.Zero) {
+                    if (RemainingTime <= TimeSpan.Zero && RemainingTime != TimeSpan.MinValue) {
+                        if (stopOnRoundEnd) {
+                            Stop();
+                        }
+                            
                         ChangePhase();
+                        stopOnRoundEnd = RoundDefinition.GetMaxRounds() > 0 && CurrentRound == RoundDefinition.GetMaxRounds();
                     }
 
                     NotifyOfPropertyChange(() => Time);
@@ -221,21 +234,21 @@ namespace TimeKeep.Domain.RoundManager
 
         private void ProcessSounds(TimeSpan time)
         { 
-            _soundManager.ProcessSounds(time, _phase);
+            _soundManager.ProcessSounds(time, CurrentPhase);
         }
 
         private void ChangePhase()
         {
-            switch (_phase)
+            switch (CurrentPhase)
             {
                 case ManagerPhase.Round:
                     CountFinishedRounds++;
-                    _phase = ManagerPhase.Pause;
+                    CurrentPhase = ManagerPhase.Pause;
                     RemainingTime = TimeSpan.FromSeconds(RoundDefinition.GetPauseTimeInSeconds());
                     break;
                 case ManagerPhase.Pause:
                     CurrentRound++;
-                    _phase = ManagerPhase.Round;
+                    CurrentPhase = ManagerPhase.Round;
                     RemainingTime = TimeSpan.FromSeconds(RoundDefinition.GetRoundTimeInSeconds());
                     break;
                 default:
@@ -244,7 +257,7 @@ namespace TimeKeep.Domain.RoundManager
 
             if (OnPhaseChanged != null)
             {
-                OnPhaseChanged(this, _phase);
+                OnPhaseChanged(this, CurrentPhase);
             }
         }
         #endregion
@@ -253,6 +266,7 @@ namespace TimeKeep.Domain.RoundManager
         {
             Stop();
             _roundDefinition = definition;
+            NotifyOfPropertyChange(() => RoundDefinition);
         }
     }
 }

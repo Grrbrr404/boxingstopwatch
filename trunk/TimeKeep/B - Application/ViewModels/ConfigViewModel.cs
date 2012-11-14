@@ -8,7 +8,6 @@
     using System.Linq;
     using System.Media;
     using System.Net.Sockets;
-    using System.Speech.Synthesis;
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;

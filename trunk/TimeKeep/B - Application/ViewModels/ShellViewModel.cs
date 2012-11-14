@@ -179,12 +179,19 @@
             var acceptChanges = _windowManager.ShowDialog(configDialog);
             if (acceptChanges.HasValue && acceptChanges.Value)
             {
+                // Save as latest used setting
+                Settings.Default.RoundInSeconds = configDialog.DialogResult.GetRoundTimeInSeconds();
+                Settings.Default.PauseInSeconds = configDialog.DialogResult.GetPauseTimeInSeconds();
+                Settings.Default.MaxRounds = configDialog.MaxRounds;
+                Settings.Default.Save();
+
                 RM.SetDefinition(configDialog.DialogResult);
                 RM.Stop();
-                Thread.Sleep(100);
                 RM.Reset();
+                
                 NotifyOfPropertyChange(() => WindowBackgroundColor);
                 NotifyOfPropertyChange(() => FontColor);
+                NotifyOfPropertyChange(() => RM);
             }
         }
 
