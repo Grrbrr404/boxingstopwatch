@@ -1,9 +1,7 @@
 ﻿using System;
 
-namespace TimeKeep.C.Domain
+namespace TimeKeep.Domain.RoundManager
 {
-    using TimeKeep.Domain.Interfaces;
-
     class StaticRoundDefinition : IRoundDefinition
     {
         public int RoundInSeconds { get; set; }

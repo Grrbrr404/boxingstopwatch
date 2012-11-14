@@ -79,6 +79,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="C - Domain\SoundController\BaseSoundDefinition.cs" />
+    <Compile Include="C - Domain\SoundController\ISoundDefinition.cs" />
+    <Compile Include="C - Domain\SoundController\RoundEndBoxingBellSoundDefinition.cs" />
+    <Compile Include="C - Domain\SoundController\SoundManager.cs" />
     <Compile Include="C - Domain\WebControlService\WebServer.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
@@ -88,12 +92,12 @@
     <Compile Include="B - Application\ViewModels\IShell.cs" />
     <Compile Include="B - Application\ViewModels\ShellViewModel.cs" />
     <Compile Include="C - Domain\Extensions\ExtensionMethods.cs" />
-    <Compile Include="C - Domain\ManagerPhase.cs" />
-    <Compile Include="C - Domain\Interfaces\IRoundDefinition.cs" />
-    <Compile Include="C - Domain\PropertyRoundDefinition.cs" />
-    <Compile Include="C - Domain\RoundManager.cs" />
-    <Compile Include="C - Domain\RoundTemplate.cs" />
-    <Compile Include="C - Domain\StaticRoundDefinition.cs" />
+    <Compile Include="C - Domain\RoundManager\ManagerPhase.cs" />
+    <Compile Include="C - Domain\RoundManager\IRoundDefinition.cs" />
+    <Compile Include="C - Domain\RoundManager\PropertyRoundDefinition.cs" />
+    <Compile Include="C - Domain\RoundManager\RoundManager.cs" />
+    <Compile Include="C - Domain\RoundManager\RoundTemplate.cs" />
+    <Compile Include="C - Domain\RoundManager\StaticRoundDefinition.cs" />
     <Compile Include="F - Foundation\Threading\BackgroundAction.cs" />
     <Compile Include="F - Foundation\Threading\BackgroundProcess.cs" />
     <Compile Include="F - Foundation\Threading\Interfaces\IBackgroundAction.cs" />
@@ -113,6 +117,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Resource Include="A - Presentation\Fonts\digital-7.ttf" />
     <None Include="app.config" />
@@ -138,6 +143,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sounds\roundend-bell.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="F - Foundation\libs\Caliburn.Micro.dll" />
     <Content Include="F - Foundation\libs\System.Windows.Interactivity.dll" />
     <Content Include="F - Foundation\libs\WPFToolkit.Extended.dll" />
