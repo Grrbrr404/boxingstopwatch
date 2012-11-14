@@ -82,10 +82,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="C - Domain\SoundController\BaseSoundDefinition.cs" />
-    <Compile Include="C - Domain\SoundController\ISoundDefinition.cs" />
     <Compile Include="C - Domain\SoundController\RoundEndBoxingBellSoundDefinition.cs" />
+    <Compile Include="C - Domain\SoundController\SoundDefinition.cs" />
+    <Compile Include="C - Domain\SoundController\ISoundDefinition.cs" />
     <Compile Include="C - Domain\SoundController\SoundManager.cs" />
+    <Compile Include="C - Domain\SoundController\SoundTemplate.cs" />
     <Compile Include="C - Domain\WebControlService\WebServer.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
@@ -148,6 +149,8 @@
   <ItemGroup>
     <Resource Include="A - Presentation\Images\app.ico" />
     <Resource Include="app.ico" />
+    <Resource Include="A - Presentation\Images\playback.png" />
+    <Resource Include="A - Presentation\Images\config.ico" />
     <Content Include="Sounds\roundend-bell.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

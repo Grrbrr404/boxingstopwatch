@@ -62,9 +62,14 @@
         private int _roundSecond;
 
         /// <summary>
-        ///     Template collection, used for template history listview
+        ///     RoundTemplate collection, used for template history listview
         /// </summary>
         private ObservableCollection<RoundTemplate> _roundTemplateCollection;
+
+        /// <summary>
+        ///     SoundTemplate collection, used for template history listview
+        /// </summary>
+        private ObservableCollection<SoundTemplate> _soundTemplateCollection;
 
         /// <summary>
         ///     Current use max rounds yes / no
@@ -78,12 +83,31 @@
         {
             DisplayName = "Konfiguration";
             LoadFromDefinition(currentlyUsedDefinition);
+            
             if (Settings.Default.RoundTemplates == null)
             {
                 Settings.Default.RoundTemplates = new StringCollection();
             }
 
+            if (Settings.Default.SoundTemplates == null)
+            {
+                CreateDefaultSoundTemplates();
+            }
+
             RoundTemplateCollection = Settings.Default.RoundTemplates.ToRoundTemplateCollection();
+            SoundTemplateCollection = Settings.Default.SoundTemplates.ToSoundDefinitionCollection();
+        }
+
+        private void CreateDefaultSoundTemplates()
+        {
+            if (Settings.Default.SoundTemplates == null)
+            {
+                var list = new StringCollection();
+                var template = new SoundTemplate { IsActive = false, Definition = new RoundEndBoxingBellSoundDefinition() };
+                list.Add(template.ToString());
+                Settings.Default.SoundTemplates = list;
+                Settings.Default.Save();
+            }
         }
         #endregion
 
@@ -275,7 +299,7 @@
         }
 
         /// <summary>
-        /// Gets or private sets Template history
+        /// Gets or private sets RoundTemplate history
         /// </summary>
         public ObservableCollection<RoundTemplate> RoundTemplateCollection
         {
@@ -287,6 +311,21 @@
             {
                 _roundTemplateCollection = value;
                 NotifyOfPropertyChange(() => RoundTemplateCollection);
+            }
+        }
+
+        /// Gets or private sets SoundTemplate settings list
+        /// </summary>
+        public ObservableCollection<SoundTemplate> SoundTemplateCollection
+        {
+            get
+            {
+                return _soundTemplateCollection;
+            }
+            private set
+            {
+                _soundTemplateCollection = value;
+                NotifyOfPropertyChange(() => SoundTemplateCollection);
             }
         }
 
@@ -380,6 +419,14 @@
                         AcceptChanges();
                     }
                 }
+            }
+        }
+
+        public void PlayTemplateSound(SoundTemplate template)
+        {
+            using (var sp = new SoundPlayer(template.Definition.SoundLocation))
+            {
+                sp.Play();
             }
         }
 

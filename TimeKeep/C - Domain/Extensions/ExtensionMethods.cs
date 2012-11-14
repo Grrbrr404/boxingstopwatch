@@ -4,6 +4,9 @@
     using System.Collections.Specialized;
 
     using TimeKeep.Domain.RoundManager;
+using TimeKeep.Domain.SoundController;
+using System.Collections;
+using System.Collections.Generic;
 
     public static class ExtensionMethods
     {
@@ -39,6 +42,32 @@
                     PauseInSeconds = int.Parse(seperated[1]),
                     RoundInSeconds = int.Parse(seperated[2])
                 }));
+            }
+
+            return result;
+        }
+
+
+        public static StringCollection ToStringCollection(this IEnumerable<SoundTemplate> self)
+        {
+            var result = new StringCollection();
+
+            foreach (var definition in self)
+            {
+                result.Add(definition.ToString());
+            }
+
+            return result;
+        }
+
+        public static ObservableCollection<SoundTemplate> ToSoundDefinitionCollection(this StringCollection self)
+        {
+            var result = new ObservableCollection<SoundTemplate>();
+            var sep = new char[] { ';' };
+            foreach (var line in self)
+            {
+                var template = SoundTemplate.FromString(line);
+                result.Add(template);
             }
 
             return result;

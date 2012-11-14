@@ -12,6 +12,7 @@ namespace TimeKeep.Domain.SoundController
     using TimeKeep.Domain.RoundManager;
     using TimeKeep.Foundation.Threading;
     using TimeKeep.Foundation.Threading.Interfaces;
+    using TimeKeep.Properties;
 
     public class SoundManager
     {
@@ -32,8 +33,11 @@ namespace TimeKeep.Domain.SoundController
 
         private void InitSounds()
         {
-            //AddSound(new RoundEndBoxingBellSoundDefinition(ManagerPhase.Round, TimeSpan.Zero));
-            AddSound(new RoundEndBoxingBellSoundDefinition(ManagerPhase.Round, TimeSpan.FromSeconds(20), TimeSpan.FromSeconds(10)));
+            foreach (var stringDef in Settings.Default.SoundTemplates)
+            {
+                var template = SoundTemplate.FromString(stringDef);
+                AddSound(template.Definition);
+            }
         }
 
         private void AddSound(ISoundDefinition def)
@@ -58,7 +62,7 @@ namespace TimeKeep.Domain.SoundController
                 }
                 else
                 {
-                    PlaySound(def.SoundSource);
+                    PlaySound(def.SoundLocation);
                 }
 
             }
@@ -69,7 +73,7 @@ namespace TimeKeep.Domain.SoundController
             var def = param as ISoundDefinition;
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            using (var sp = new SoundPlayer(def.SoundSource))
+            using (var sp = new SoundPlayer(def.SoundLocation))
             {
                 while (stopwatch.Elapsed < def.RepeatDuration) {
                     sp.PlaySync();    

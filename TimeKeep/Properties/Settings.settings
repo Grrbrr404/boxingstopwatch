@@ -29,5 +29,8 @@
     <Setting Name="FontColorPause" Type="System.String" Scope="User">
       <Value Profile="(Default)">#000000</Value>
     </Setting>
+    <Setting Name="SoundTemplates" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
