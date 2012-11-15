@@ -89,8 +89,6 @@
                 Settings.Default.RoundTemplates = new StringCollection();
             }
 
-            
-
             RoundTemplateCollection = Settings.Default.RoundTemplates.ToRoundTemplateCollection();
             SoundTemplateCollection = Settings.Default.SoundTemplates.ToSoundDefinitionCollection();
         }
@@ -351,6 +349,7 @@
 
             AddDefinitionToHistory(_result);
 
+            Settings.Default.SoundTemplates = SoundTemplateCollection.ToStringCollection();
             Settings.Default.Save();
             TryClose(true);
         }

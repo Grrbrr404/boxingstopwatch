@@ -82,6 +82,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="C - Domain\SoundController\BeepSoundDefinition.cs" />
+    <Compile Include="C - Domain\SoundController\DingSoundDefinition.cs" />
+    <Compile Include="C - Domain\SoundController\TrippleWoodTockSoundDefinition.cs" />
+    <Compile Include="C - Domain\SoundController\RoundBeginBoxingBellSoundDefinition.cs" />
     <Compile Include="C - Domain\SoundController\RoundEndBoxingBellSoundDefinition.cs" />
     <Compile Include="C - Domain\SoundController\SoundDefinition.cs" />
     <Compile Include="C - Domain\SoundController\ISoundDefinition.cs" />
@@ -147,10 +151,28 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sounds\ding.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\wood-shorttock.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\wood-tock.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\wood-trippletock.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="A - Presentation\Images\app.ico" />
     <Resource Include="app.ico" />
     <Resource Include="A - Presentation\Images\playback.png" />
     <Resource Include="A - Presentation\Images\config.ico" />
+    <Content Include="Sounds\beep.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\roundbegin-bell.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sounds\roundend-bell.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

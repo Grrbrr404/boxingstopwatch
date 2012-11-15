@@ -50,7 +50,7 @@ namespace TimeKeep.Domain.RoundManager
 
         public delegate void PhaseChangedHandler(object sender, ManagerPhase newPhase);
         public event PhaseChangedHandler OnPhaseChanged;
-        
+
         public RoundManager(IRoundDefinition roundDef)
         {
             SetDefinition(roundDef);
@@ -140,7 +140,7 @@ namespace TimeKeep.Domain.RoundManager
             }
         }
 
-        
+
         /// <summary>
         /// Gets or sets the remaining time of the current phase as timespan
         /// </summary>
@@ -179,7 +179,8 @@ namespace TimeKeep.Domain.RoundManager
         #region Methods
         public void Start()
         {
-            if (_timerAction == null) {
+            if (_timerAction == null)
+            {
                 _timerAction = new BackgroundAction(RoundTimerTick);
                 _timerAction.Start();
                 RemainingTime = TimeSpan.FromSeconds(_roundDefinition.GetRoundTimeInSeconds());
@@ -196,7 +197,8 @@ namespace TimeKeep.Domain.RoundManager
             }
         }
 
-        public void Reset() {
+        public void Reset()
+        {
             CurrentPhase = ManagerPhase.Round;
             if (OnPhaseChanged != null)
             {
@@ -218,15 +220,17 @@ namespace TimeKeep.Domain.RoundManager
 
                     RemainingTime = RemainingTime.Subtract(TimeSpan.FromMilliseconds(TIMER_INTERVAL));
                     ProcessSounds(RemainingTime);
-                    if (RemainingTime <= TimeSpan.Zero && RemainingTime != TimeSpan.MinValue) {
-                        if (stopOnRoundEnd) {
+                    if (RemainingTime <= TimeSpan.Zero && RemainingTime != TimeSpan.MinValue)
+                    {
+                        if (stopOnRoundEnd)
+                        {
                             Stop();
                             Reset();
                             // Set current round property again after reset, so that user can see that max round has reached (displayed in gui)
                             CurrentRound = RoundDefinition.GetMaxRounds();
                             break;
                         }
-                            
+
                         ChangePhase();
                         stopOnRoundEnd = RoundDefinition.GetMaxRounds() > 0 && CurrentRound == RoundDefinition.GetMaxRounds();
                     }
@@ -237,8 +241,13 @@ namespace TimeKeep.Domain.RoundManager
         }
 
         private void ProcessSounds(TimeSpan time)
-        { 
+        {
             _soundManager.ProcessSounds(time, CurrentPhase);
+        }
+
+        public void ReloadSounds()
+        {
+            _soundManager.ReloadSounds();
         }
 
         private void ChangePhase()

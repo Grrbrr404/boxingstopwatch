@@ -38,12 +38,21 @@ namespace TimeKeep.Domain.SoundController
             {
                 CreateDefaultSoundTemplates();
             }
-            
+
             foreach (var stringDef in Settings.Default.SoundTemplates)
             {
                 var template = SoundTemplate.FromString(stringDef);
-                AddSound(template.Definition);
+                if (template.IsActive)
+                {
+                    AddSound(template.Definition);
+                }
             }
+        }
+
+        public void ReloadSounds() 
+        {
+            Sounds.Clear();
+            InitSounds();
         }
 
         private void CreateDefaultSoundTemplates()
@@ -53,6 +62,21 @@ namespace TimeKeep.Domain.SoundController
                 var list = new StringCollection();
                 var template = new SoundTemplate { IsActive = false, Definition = new RoundEndBoxingBellSoundDefinition() };
                 list.Add(template.ToString());
+
+                template = new SoundTemplate { IsActive = false, Definition = new RoundBeginBoxingBellSoundDefinition() };
+                list.Add(template.ToString());
+
+                template = new SoundTemplate { IsActive = false, Definition = new TrippleWoodTockSoundDefinition() };
+                list.Add(template.ToString());
+
+                template = new SoundTemplate { IsActive = false, Definition = new DingSoundDefinition() };
+                list.Add(template.ToString());
+
+                template = new SoundTemplate { IsActive = false, Definition = new DingSoundDefinition(ManagerPhase.Pause) };
+                list.Add(template.ToString());
+                
+                
+
                 Settings.Default.SoundTemplates = list;
                 Settings.Default.Save();
             }
@@ -82,7 +106,6 @@ namespace TimeKeep.Domain.SoundController
                 {
                     PlaySound(def.SoundLocation);
                 }
-
             }
         }
 
@@ -93,8 +116,9 @@ namespace TimeKeep.Domain.SoundController
             stopwatch.Start();
             using (var sp = new SoundPlayer(def.SoundLocation))
             {
-                while (stopwatch.Elapsed < def.RepeatDuration) {
-                    sp.PlaySync();    
+                while (stopwatch.Elapsed < def.RepeatDuration)
+                {
+                    sp.PlaySync();
                 }
             }
 

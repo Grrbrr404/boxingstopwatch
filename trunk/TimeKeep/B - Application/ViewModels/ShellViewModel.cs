@@ -179,7 +179,7 @@
             var acceptChanges = _windowManager.ShowDialog(configDialog);
             if (acceptChanges.HasValue && acceptChanges.Value)
             {
-                // Save as latest used setting
+                // Save dialogresult as latest used setting so it is loaded automatically on application startup
                 Settings.Default.RoundInSeconds = configDialog.DialogResult.GetRoundTimeInSeconds();
                 Settings.Default.PauseInSeconds = configDialog.DialogResult.GetPauseTimeInSeconds();
                 Settings.Default.MaxRounds = configDialog.MaxRounds;
@@ -188,6 +188,7 @@
                 RM.SetDefinition(configDialog.DialogResult);
                 RM.Stop();
                 RM.Reset();
+                RM.ReloadSounds();
                 
                 NotifyOfPropertyChange(() => WindowBackgroundColor);
                 NotifyOfPropertyChange(() => FontColor);
