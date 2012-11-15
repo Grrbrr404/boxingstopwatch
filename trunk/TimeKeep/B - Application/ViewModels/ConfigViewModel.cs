@@ -89,25 +89,10 @@
                 Settings.Default.RoundTemplates = new StringCollection();
             }
 
-            if (Settings.Default.SoundTemplates == null)
-            {
-                CreateDefaultSoundTemplates();
-            }
+            
 
             RoundTemplateCollection = Settings.Default.RoundTemplates.ToRoundTemplateCollection();
             SoundTemplateCollection = Settings.Default.SoundTemplates.ToSoundDefinitionCollection();
-        }
-
-        private void CreateDefaultSoundTemplates()
-        {
-            if (Settings.Default.SoundTemplates == null)
-            {
-                var list = new StringCollection();
-                var template = new SoundTemplate { IsActive = false, Definition = new RoundEndBoxingBellSoundDefinition() };
-                list.Add(template.ToString());
-                Settings.Default.SoundTemplates = list;
-                Settings.Default.Save();
-            }
         }
         #endregion
 
