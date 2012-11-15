@@ -13,6 +13,7 @@ namespace TimeKeep.Domain.SoundController
     using TimeKeep.Foundation.Threading;
     using TimeKeep.Foundation.Threading.Interfaces;
     using TimeKeep.Properties;
+    using System.Collections.Specialized;
 
     public class SoundManager
     {
@@ -33,10 +34,27 @@ namespace TimeKeep.Domain.SoundController
 
         private void InitSounds()
         {
+            if (Settings.Default.SoundTemplates == null)
+            {
+                CreateDefaultSoundTemplates();
+            }
+            
             foreach (var stringDef in Settings.Default.SoundTemplates)
             {
                 var template = SoundTemplate.FromString(stringDef);
                 AddSound(template.Definition);
+            }
+        }
+
+        private void CreateDefaultSoundTemplates()
+        {
+            if (Settings.Default.SoundTemplates == null)
+            {
+                var list = new StringCollection();
+                var template = new SoundTemplate { IsActive = false, Definition = new RoundEndBoxingBellSoundDefinition() };
+                list.Add(template.ToString());
+                Settings.Default.SoundTemplates = list;
+                Settings.Default.Save();
             }
         }
 
