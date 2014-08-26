@@ -1,0 +1,163 @@
+﻿<Window x:Class="TimeKeep.Presentation.Views.ConfigView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro" xmlns:con="clr-namespace:TimeKeep.A.Presentation.Converter" Title="Konfiguration" Width="411" Height="400" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" WindowStartupLocation="CenterOwner" Icon="/TimeKeep;component/A%20-%20Presentation/Images/config.ico">
+    <Window.Resources>
+        <con:ZeroIntToSymbolConverter x:Key="zeroCon" />
+    </Window.Resources>
+    <StackPanel>
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10" Height="310">
+            <TabItem Header="Runde" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <StackPanel Margin="3" Height="219">
+                    <GroupBox Header="Aktuell verwendet" Height="84" Padding="2, 2, 2 ,2" ToolTip="Minuten">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" Margin="0, 3, 0, 3" Grid.ColumnSpan="2" TextAlignment="Center">Rundenzeit</TextBlock>
+                            <TextBox Name="RoundMinute" cal:Message.Attach="[Event PreviewTextInput] = [Action PreviewTextInput($source, $eventArgs)];" Grid.Column="0" Grid.Row="1" Width="52" Text="{Binding RoundMinute, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnExceptions=True, StringFormat=00}" MaxLength="2" Style="{DynamicResource digifont}" FontSize="30" TextAlignment="center" AutoWordSelection="False" />
+                            <TextBox Name="RoundSecond" cal:Message.Attach="[Event PreviewTextInput] = [Action PreviewTextInput($source, $eventArgs)];" Grid.Column="1" Grid.Row="1" Width="52" Text="{Binding RoundSecond, StringFormat=00}" MaxLength="2" Style="{DynamicResource digifont}" FontSize="30" TextAlignment="center" />
+
+                            <TextBlock VerticalAlignment="Center" Grid.Column="3" Margin="0, 3, 0, 3" Grid.ColumnSpan="2" TextAlignment="Center">Pausenzeit</TextBlock>
+                            <TextBox cal:Message.Attach="[Event PreviewTextInput] = [Action PreviewTextInput($source, $eventArgs)];" Name="PauseMinute" Grid.Column="3" Grid.Row="1" Width="52" Text="{Binding PauseMinute, StringFormat=00}" MaxLength="2" Style="{DynamicResource digifont}" FontSize="30" TextAlignment="center" />
+                            <TextBox cal:Message.Attach="[Event PreviewTextInput] = [Action PreviewTextInput($source, $eventArgs)];" Name="PauseSecond" Grid.Column="4" Grid.Row="1" Width="52" Text="{Binding PauseSecond, StringFormat=00}" MaxLength="2" Style="{DynamicResource digifont}" FontSize="30" TextAlignment="center" />
+
+                            <StackPanel Grid.Column="6" Orientation="Horizontal">
+                                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Name="chckbxUseMaxRounds" IsChecked="{Binding UseMaxRounds}"/>
+                                <TextBlock Grid.Column="6" Margin="3, 3, 0, 3" TextAlignment="Center">Max. Runden</TextBlock>
+                            </StackPanel>
+                            <TextBox IsEnabled="{Binding IsChecked, ElementName=chckbxUseMaxRounds}" cal:Message.Attach="[Event PreviewTextInput] = [Action PreviewTextInput($source, $eventArgs)];" Name="MaxRounds" Grid.Column="6" Grid.Row="1" Width="52" Text="{Binding MaxRounds, Converter={StaticResource zeroCon}}" MaxLength="3" Style="{DynamicResource digifont}" FontSize="30" TextAlignment="center" />
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Vorlage verwenden" Height="131" Name="grpbxRound" Padding="2, 2, 2 ,2" Margin="0, 5, 0 ,0" ToolTip="Minuten">
+                        <ListView ItemsSource="{Binding RoundTemplateCollection}" cal:Message.Attach="[Event SelectionChanged] = [Action LoadFromTemplate($source, $eventArgs)]; [Event PreviewMouseDown] = [Action LoadFromTemplateAndCloseDialog($source, $eventArgs)]">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="50" Header="Runde">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextAlignment="Center" Text="{Binding Round}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="50" Header="Pause">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextAlignment="Center" Text="{Binding Pause}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="80" Header="Max. Runden">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextAlignment="Center" Text="{Binding MaxRounds, Converter={StaticResource zeroCon}}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Farben &amp; Töne">
+                <StackPanel>
+                    <GroupBox Header="Farben für die Anzeige" Padding="2,2,2,2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Text="Runden Phase" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="Pausen Phase" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            
+                            <TextBlock Grid.Row="1" Text="Hintergrund" VerticalAlignment="Center"/>
+                            <xctk:ColorPicker Grid.Row="1" Grid.Column="1" SelectedColor="{Binding DisplayBackgroundColor}"/>
+                            <xctk:ColorPicker Grid.Row="1" Grid.Column="2" SelectedColor="{Binding DisplayBackgroundColorPause}"/>
+                            
+                            <TextBlock Grid.Row="2" Text="Schrift" VerticalAlignment="Center"/>
+                            <xctk:ColorPicker Grid.Row="2" Grid.Column="1" SelectedColor="{Binding FontColor}"/>
+                            <xctk:ColorPicker Grid.Row="2" Grid.Column="2" SelectedColor="{Binding FontColorPause}"/>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Header="Töne" Height="161" Name="grpbxSounds" Padding="2, 2, 2 ,2" Margin="0, 5, 0 ,0">
+                        <ListView ItemsSource="{Binding SoundTemplateCollection}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="50" Header="Aktiv?">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding IsActive}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="60" Header="Bei Zeit">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextAlignment="Center" Text="{Binding Time}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="60" Header="In Phase">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextAlignment="Center" Text="{Binding Definition.PhaseToPlaySound}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="120" Header="Name">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextAlignment="Center" Text="{Binding File}" ToolTip="{Binding Definition.SoundLocation}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn >
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Width="25" cal:Message.Attach="[Event Click] = [Action PlayTemplateSound($this)]" Background="#00000000" BorderBrush="#00000000">
+                                                    <Image Source="/TimeKeep;component/A%20-%20Presentation/Images/playback.png"></Image>
+                                                </Button>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 10, 0">
+            <Button Width="80" cal:Message.Attach="[Event Click] = [Action AcceptChanges]">OK</Button>
+            <Button Width="80"  Margin="10, 0, 0, 0" IsCancel="True">Abbrechen</Button>
+        </StackPanel>
+    </StackPanel>
+</Window>
